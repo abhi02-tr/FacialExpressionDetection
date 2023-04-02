@@ -17,7 +17,7 @@ face_haar_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
 cap=cv2.VideoCapture(0)  
   
 while True:  
-    ret,test_img=cap.read()# captures frame and returns boolean value and captured image  
+    ret,test_img=cap.read()
     if not ret:  
         continue  
     gray_img= cv2.cvtColor(test_img, cv2.COLOR_BGR2GRAY)  
@@ -28,7 +28,7 @@ while True:
     for (x,y,w,h) in faces_detected:
         print('WORKING')
         cv2.rectangle(test_img,(x,y),(x+w,y+h),(255,0,0),thickness=7)  
-        roi_gray=gray_img[y:y+w,x:x+h]#cropping region of interest i.e. face area from  image  
+        roi_gray=gray_img[y:y+w,x:x+h]  
         roi_gray=cv2.resize(roi_gray,(48,48))  
         img_pixels = image.img_to_array(roi_gray)  
         img_pixels = np.expand_dims(img_pixels, axis = 0)  
@@ -46,9 +46,7 @@ while True:
   
     resized_img = cv2.resize(test_img, (1000, 700))  
     cv2.imshow('Facial emotion analysis ',resized_img)  
-  
-  
-  
+    
     if cv2.waitKey(10) == ord('q'):#wait until 'q' key is pressed  
         break  
   

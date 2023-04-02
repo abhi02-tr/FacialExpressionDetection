@@ -19,9 +19,8 @@ app = Flask(__name__)
 
 camera = cv2.VideoCapture(0)
 
-def gen_frames():  # generate frame by frame from camera
+def gen_frames(): 
     while True:
-        # Capture frame by frame
         success, frame = camera.read()
         if not success:
             break
@@ -34,7 +33,7 @@ def gen_frames():  # generate frame by frame from camera
             for (x,y,w,h) in faces_detected:
                 print('WORKING')
                 cv2.rectangle(frame,(x,y),(x+w,y+h),(255,0,0),thickness=7)  
-                roi_gray=gray_img[y:y+w,x:x+h]          #cropping region of interest i.e. face area from  image  
+                roi_gray=gray_img[y:y+w,x:x+h]          
                 roi_gray=cv2.resize(roi_gray,(48,48))  
                 img_pixels = image.img_to_array(roi_gray)  
                 img_pixels = np.expand_dims(img_pixels, axis = 0)  
@@ -59,12 +58,11 @@ def gen_frames():  # generate frame by frame from camera
             
             frame = buffer.tobytes()
             yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
 @app.route('/video_feed')
 def video_feed():
-    #Video streaming route. Put this in the src attribute of an img tag
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
@@ -74,4 +72,4 @@ def index():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=3000)
